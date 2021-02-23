@@ -1,18 +1,19 @@
 <% layout('layouts/boilerplate') %>   
    <h1>Edit Campground</h1>
    <form action="/campgrounds/<%=campground._id%>?_method=PUT" method="POST">
-      <div>
+      <div class="form-group">
          <label for="title">Title</label>
-         <input for="text" id="title" name="campground[title]" value="<%=campground.title%>"></input>
+         <input class="form-control" for="text" id="title" name="campground[title]" value="<%=campground.title%>"></input>
       </div>
-      <div>
+      <div class="form-group">
          <label for="location">Location</label>
-         <input for="text" id="location" name="campground[location]" value="<%=campground.location%>"></input>
+         <input class="form-control" for="text" id="location" name="campground[location]" value="<%=campground.location%>"></input>
       </div>
-      <button>Update Campground</button>
+      <button class="btn btn-success">Update Campground</button>
    </form>
-   <a href="/campgrounds/<%=campground._id %>">Back To Campground</a>
+   <a class="mt-2 btn btn-secondary" href="/campgrounds/<%=campground._id %>">Back To Campground</a>
    <footer>
-      <a href="/campgrounds/<%=campground._id%>">Edit</a>
-      <a href="/campgrounds">All Campgrounds</a>
+      <div class="py-3">
+         <a class="text-muted" href="/campgrounds">All Campgrounds</a>
+      </div>
    </footer>
