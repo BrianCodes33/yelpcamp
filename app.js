@@ -2,6 +2,7 @@ const express = require('express')
 const path = require('path')
 const mongoose = require('mongoose')
 const ejsmate = require('ejs-mate')
+const catchAsync = require('./utils/CatchAsync')
 const methodOverride = require('method-override')
 const Campground = require('./models/campground')
 
@@ -28,6 +29,13 @@ app.use(methodOverride('_method'))
 
 app.get('/', (req, res) => {
   res.render('home')
+  // throw new Error('error')
+})
+
+app.use((err, req, res, next) => {
+  console.log(err);
+  res.send('Oh boy, something went wrong')
+  next()
 })
 
 app.get('/campgrounds', async (req, res) => {
@@ -40,9 +48,10 @@ app.get('/campgrounds/new', async (req, res) => {
 })
 
 app.post('/campgrounds', async(req, res) => {
-  const campground = new Campground(req.body.campground)
-  await campground.save()
-  res.redirect(`/campgrounds/${campground._id}`)
+    const campground = new Campground(req.body.campground)
+    console.log(campground)
+    await campground.save()
+    res.redirect(`/campgrounds/${campground._id}`)
 })
 
 app.get('/campgrounds/:id', async (req, res) => {
@@ -67,6 +76,7 @@ app.delete('/campgrounds/:id', async (req, res) => {
   await Campground.findByIdAndDelete(id)
   res.redirect('/campgrounds')
 })
+
 
 
 app.listen(3000, () => {
