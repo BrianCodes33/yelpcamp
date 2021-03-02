@@ -47,12 +47,12 @@ app.get('/campgrounds/new', async (req, res) => {
   res.render('campgrounds/new')
 })
 
-app.post('/campgrounds', async(req, res) => {
+app.post('/campgrounds', catchAsync(async(req, res) => {
     const campground = new Campground(req.body.campground)
     console.log(campground)
     await campground.save()
     res.redirect(`/campgrounds/${campground._id}`)
-})
+}))
 
 app.get('/campgrounds/:id', async (req, res) => {
   const campground = await Campground.findById(req.params.id)
@@ -77,7 +77,9 @@ app.delete('/campgrounds/:id', async (req, res) => {
   res.redirect('/campgrounds')
 })
 
-
+app.use((err, req, res, next) => {
+  res.send('something wong')
+})
 
 app.listen(3000, () => {
   console.log('Serving on port 3000')
