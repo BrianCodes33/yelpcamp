@@ -1,5 +1,13 @@
-<div class="alert alert-danger" role="alert">
-  <h4 class="alert-heading">Error</h4>
-  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero tenetur, fugit possimus neque accusamus repellat magnam placeat et a necessitatibus?</p>
-  <p class="mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem molestiae doloremque maxime labore maiores consequatur ipsum ut. Distinctio, recusandae at laborum esse numquam facilis, earum in voluptatum eos eius soluta!</p>
+<% layout('layouts/boilerplate')%>
+<div class="container-fluid">
+  <div class="row w-100">
+    <div class="col">
+      <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading"><%= err.message %></h4>
+        <p><%=err.stack%></p>
+        <hr>
+        <p class="mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem molestiae doloremque maxime labore maiores consequatur ipsum ut. Distinctio, recusandae at laborum esse numquam facilis, earum in voluptatum eos eius soluta!</p>
+      </div>
+    </div> 
+  </div>
 </div>
