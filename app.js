@@ -3,6 +3,7 @@ const path = require('path')
 const mongoose = require('mongoose')
 const ejsmate = require('ejs-mate')
 const catchAsync = require('./utils/CatchAsync')
+const ExpressError = require('./utils/ExpressError')
 const methodOverride = require('method-override')
 const Campground = require('./models/campground')
 
@@ -32,12 +33,6 @@ app.get('/', (req, res) => {
   // throw new Error('error')
 })
 
-app.use((err, req, res, next) => {
-  console.log(err);
-  res.send('Oh boy, something went wrong')
-  next()
-})
-
 app.get('/campgrounds', catchAsync(async (req, res) => {
   const campgrounds = await Campground.find({})
   res.render('campgrounds/index', { campgrounds })
@@ -48,6 +43,7 @@ app.get('/campgrounds/new', async (req, res) => {
 })
 
 app.post('/campgrounds', catchAsync(async(req, res) => {
+    if (!req.body.campground) throw new ExpressError('Invalid campground data', 400)
     const campground = new Campground(req.body.campground)
     console.log(campground)
     await campground.save()
@@ -77,8 +73,13 @@ app.delete('/campgrounds/:id', catchAsync(async (req, res) => {
   res.redirect('/campgrounds')
 }))
 
+app.all('*', (req, res, next) => {
+  next(new ExpressError('Page not found', 404))
+})
+
 app.use((err, req, res, next) => {
-  res.send('something wong')
+  const {statusCode = 500, message='something wong'} = err
+  res.status(statusCode).send(message)
 })
 
 app.listen(3000, () => {
