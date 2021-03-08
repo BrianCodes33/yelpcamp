@@ -53,8 +53,12 @@ app.post('/campgrounds', catchAsync(async(req, res, next) => {
         price: Joi.number().required().min(0),
       }).required()
     })
-    const result = campgroundSchema.validate(req.body)
-    console.log(result);
+    const { error } = campgroundSchema.validate(req.body)
+    if (error) {
+      const msg = error.details.map(el => el.message).join(',')
+      throw new ExpressError(msg, 400)
+    }
+    
     const campground = new Campground(req.body.campground)
     await campground.save()
     res.redirect(`/campgrounds/${campground._id}`)
