@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const ejsmate = require('ejs-mate')
 const morgan = require('morgan')
 const Joi = require('joi')
+const { campgroundSchema } = require('./schemas.js')
 const catchAsync = require('./utils/CatchAsync')
 const ExpressError = require('./utils/ExpressError')
 const methodOverride = require('method-override')
@@ -33,15 +34,6 @@ app.use(express.urlencoded({ extended: true}))
 app.use(methodOverride('_method'))
 
 const validateCampground = (req, res, next) => {
-  const campgroundSchema = Joi.object({
-    campground: Joi.object({
-      title: Joi.string().required(),
-      price: Joi.number().required().min(0),
-      image: Joi.string().required(),
-      location: Joi.string().required(),
-      description: Joi.string().required()
-    }).required()
-  })
   const { error } = campgroundSchema.validate(req.body)
   if (error) {
     const msg = error.details.map(el => el.message).join(',')
@@ -57,9 +49,7 @@ app.get('/', (req, res) => {
 
 app.get('/campgrounds', catchAsync(async (req, res) => {
   const campgrounds = await Campground.find({})
-  res.render('campgrounds/index', {
-    campgrounds
-  })
+  res.render('campgrounds/index', { campgrounds })
 }))
 
 app.get('/campgrounds/new', async (req, res) => {
@@ -75,16 +65,12 @@ app.post('/campgrounds', validateCampground, catchAsync(async (req, res, next) =
 app.get('/campgrounds/:id', catchAsync(async (req, res) => {
   const campground = await Campground.findById(req.params.id)
   console.log(campground)
-  res.render('campgrounds/show', {
-    campground
-  })
+  res.render('campgrounds/show', { campground })
 }))
 
 app.get('/campgrounds/:id/edit', catchAsync(async (req, res) => {
   const campground = await Campground.findById(req.params.id)
-  res.render('campgrounds/edit', {
-    campground
-  })
+  res.render('campgrounds/edit', { campground })
 }))
 
 app.put('/campgrounds/:id', catchAsync(async (req, res) => {
