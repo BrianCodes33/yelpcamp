@@ -19,14 +19,16 @@
          </div>
       </div>
       <h2>Leave A Review</h2>
-      <form action="/campgrounds/<%=campground._id%>/reviews" method="POST" class="mb-3 validated-form" novalidate> 
+      <form action="/campgrounds/<%=campground._id%>/reviews" method="POST" class="mb-3 validated-form" novalidate>
          <div class="mb-3">
             <label style="display: block;" class="form-label" for="rating">Rating</label>
-            <input style="width: 100%;" type="range" class="form-range" min="1" max="5" name="review[rating]" id="rating">
+            <input style="width: 100%;" type="range" class="form-range" min="1" max="5" name="review[rating]"
+               id="rating">
          </div>
          <div class="mb-3">
-            <label style="display: block;" for="form-label" for="body">Review</label>
-            <textarea style="resize: none; width: 100%;" name="review[body]" id="body" cols="30" rows="3"></textarea>
+            <label style="display: block;" class="form-label" for="body">Review</label>
+            <textarea class="form-control" style="resize: none; width: 100%;" name="review[body]" id="body" cols="30"
+               rows="3" required></textarea>
             <div class="valid-feedback">Looks good</div>
          </div>
          <button class="btn btn-success">Add Review</button>
